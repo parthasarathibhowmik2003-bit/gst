@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isDataOwner() {
+      return isSignedIn() && resource.data.creatorId == request.auth.uid;
+    }
+
+    function isPendingDataOwner() {
+      return isSignedIn() && request.resource.data.creatorId == request.auth.uid;
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+
+    // Invoices
+    match /invoices/{invoiceId} {
+      allow read: if isDataOwner();
+      allow list: if isSignedIn() && resource.data.creatorId == request.auth.uid;
+      allow create: if isPendingDataOwner();
+      allow update: if isDataOwner() && isPendingDataOwner();
+      allow delete: if isDataOwner();
+    }
+
+    // Customers
+    match /customers/{customerId} {
+      allow read: if isDataOwner();
+      allow list: if isSignedIn() && resource.data.creatorId == request.auth.uid;
+      allow create: if isPendingDataOwner();
+      allow update: if isDataOwner() && isPendingDataOwner();
+      allow delete: if isDataOwner();
+    }
+
+    // Products
+    match /products/{productId} {
+      allow read: if isDataOwner();
+      allow list: if isSignedIn() && resource.data.creatorId == request.auth.uid;
+      allow create: if isPendingDataOwner();
+      allow update: if isDataOwner() && isPendingDataOwner();
+      allow delete: if isDataOwner();
+    }
+  }
+}

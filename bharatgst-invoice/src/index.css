@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-primary: #0A2540;
+  --color-sidebar: #081b2e;
+  --color-accent: #00C853;
+  --color-bg: #F8FAFC;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800 bg-bg;
+  }
+}
+
+/* High Density Specific Styles */
+.card-stat {
+  @apply bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow;
+}
+
+.sidebar-link {
+  @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+}
+
+.sidebar-link-active {
+  @apply bg-slate-700/50 text-accent border-l-2 border-accent;
+}
+
+.sidebar-link-inactive {
+  @apply text-slate-400 hover:bg-slate-700/30;
+}
+
+.table-header {
+  @apply bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500 font-bold;
+}
+
+.badge {
+  @apply px-2 py-0.5 rounded-full text-[10px] font-bold uppercase;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-700;
+}
+
+.badge-warning {
+  @apply bg-amber-100 text-amber-700;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-700;
+}
+
+.transition-all {
+  transition-duration: 300ms;
+}
+

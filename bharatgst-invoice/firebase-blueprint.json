@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Business profile and settings for the user",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string" },
+        "gstin": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "bankName": { "type": "string" },
+        "accountNumber": { "type": "string" },
+        "ifscCode": { "type": "string" },
+        "upiId": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["businessName", "gstin"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "GST-compliant invoice record",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerGstin": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "quantity": { "type": "number" },
+              "price": { "type": "number" },
+              "gstRate": { "type": "number" }
+            }
+          }
+        },
+        "subtotal": { "type": "number" },
+        "cgstTotal": { "type": "number" },
+        "sgstTotal": { "type": "number" },
+        "igstTotal": { "type": "number" },
+        "grandTotal": { "type": "number" },
+        "status": { "type": "string", "enum": ["paid", "unpaid", "partial"] },
+        "paymentMethod": { "type": "string", "enum": ["cash", "upi", "bank"] },
+        "creatorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["invoiceNumber", "date", "items", "grandTotal", "creatorId"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer record in the database",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "gstin": { "type": "string" },
+        "address": { "type": "string" },
+        "creatorId": { "type": "string" }
+      },
+      "required": ["name", "creatorId"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Saved product or service for quick invoicing",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "gstRate": { "type": "number" },
+        "creatorId": { "type": "string" }
+      },
+      "required": ["name", "price", "gstRate", "creatorId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User business profiles"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Invoices created by users"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "User customer list"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "User product list"
+    }
+  }
+}

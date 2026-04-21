@@ -1,1 +1,1 @@
-<h1>link: https://real-violet-gr83uq6w8o.edgeone.app/auth</h1>
+<h1>link: https://velvety-pasca-f5d094.netlify.app/auth</h1>
